@@ -41,8 +41,9 @@ export interface GameState {
    */
   players: Player[];
   /** Finally the array of community cards. */
-  community_cards: Holecard[];
+  community_cards: Card[];
 }
+
 export interface Player {
   /** Id of the player (same as the index) */
   id: number;
@@ -69,9 +70,10 @@ export interface Player {
    * The cards of the player.
    * This is only visible for your own player except after showdown, when cards revealed are also included.
    */
-  hole_cards?: Holecard[];
+  hole_cards?: Card[];
 }
-export interface Holecard {
+
+export interface Card {
   /** Rank of the card. Possible values are numbers 2-10 and J,Q,K,A */
   rank: '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '10' | 'J' | 'Q' | 'K' | 'A';
   /** Suit of the card. Possible values are: clubs,spades,hearts,diamonds */
