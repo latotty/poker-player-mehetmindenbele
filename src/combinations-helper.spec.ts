@@ -164,6 +164,45 @@ const cases: {
     ],
     combinations: [Combination.Straight, Combination.Flush, Combination.StraightFlush, Combination.RoyalFlush],
   },
+  {
+    hand: [
+      { rank: '5', suit: 'hearts' },
+      { rank: '6', suit: 'clubs' },
+    ],
+    comm: [
+      { rank: '4', suit: 'hearts' },
+      { rank: '9', suit: 'clubs' },
+      { rank: 'A', suit: 'spades' },
+      { rank: '7', suit: 'clubs' },
+    ],
+    combinations: [],
+  },
+  {
+    hand: [
+      { rank: '5', suit: 'hearts' },
+      { rank: '6', suit: 'clubs' },
+    ],
+    comm: [
+      { rank: '4', suit: 'hearts' },
+      { rank: '8', suit: 'clubs' },
+      { rank: 'A', suit: 'spades' },
+      { rank: '7', suit: 'clubs' },
+    ],
+    combinations: [Combination.Straight],
+  },
+  {
+    hand: [
+      { rank: '5', suit: 'hearts' },
+      { rank: 'J', suit: 'clubs' },
+    ],
+    comm: [
+      { rank: '4', suit: 'hearts' },
+      { rank: '8', suit: 'clubs' },
+      { rank: '6', suit: 'spades' },
+      { rank: '7', suit: 'clubs' },
+    ],
+    combinations: [Combination.Straight],
+  },
 ];
 
 cases.forEach(({ combinations, hand, comm }, i) =>
