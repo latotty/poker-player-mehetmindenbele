@@ -14,6 +14,8 @@ const isTwoPair: CardMatcher = (hand, comm) =>
 const isThreeOfAKind: CardMatcher = (hand, comm) =>
   hand.filter((c, i) => [...hand.slice(i + 1), ...comm].filter(c2 => c.rank === c2.rank).length >= 2).length >= 1;
 
+const royal: Card['rank'][] = ['10', 'J', 'Q', 'K', 'A'];
+
 const straights: Card['rank'][][] = [
   ['A', '2', '3', '4', '5'],
   ['2', '3', '4', '5', '6'],
@@ -24,7 +26,7 @@ const straights: Card['rank'][][] = [
   ['7', '8', '9', '10', 'J'],
   ['8', '9', '10', 'J', 'Q'],
   ['9', '10', 'J', 'Q', 'K'],
-  ['10', 'J', 'Q', 'K', 'A'],
+  royal,
 ];
 
 const suites = ['clubs', 'spades', 'hearts', 'diamonds'];
@@ -61,6 +63,15 @@ const isStraightFlush: CardMatcher = (hand, comm) =>
     ),
   );
 
+const isRoyalFlush: CardMatcher = (hand, comm) =>
+  suites.some(
+    suite =>
+      // MUST be at least one card in hand
+      royal.some(sRank => hand.some(c => c.rank === sRank && c.suit === suite)) &&
+      // MUST be every card in hand + comm
+      royal.every(sRank => [...hand, ...comm].some(c => c.rank === sRank && c.suit === suite)),
+  );
+
 const matchers: [number, CardMatcher][] = [
   [1, isOnePair],
   [2, isTwoPair],
@@ -69,6 +80,7 @@ const matchers: [number, CardMatcher][] = [
   [5, isFlush],
   [7, isFourOfAKind],
   [8, isStraightFlush],
+  [9, isRoyalFlush],
 ];
 
 export const checkCombinations = (...opts: Parameters<CardMatcher>): number =>

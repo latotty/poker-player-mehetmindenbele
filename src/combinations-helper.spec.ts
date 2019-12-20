@@ -105,6 +105,19 @@ const cases: {
     ],
     score: 8,
   },
+  {
+    hand: [
+      { rank: '2', suit: 'spades' },
+      { rank: '10', suit: 'diamonds' },
+    ],
+    comm: [
+      { rank: 'J', suit: 'diamonds' },
+      { rank: 'K', suit: 'diamonds' },
+      { rank: 'Q', suit: 'diamonds' },
+      { rank: 'A', suit: 'diamonds' },
+    ],
+    score: 9,
+  },
 ];
 
 cases.forEach(({ score, hand, comm }, i) =>
