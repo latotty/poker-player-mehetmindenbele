@@ -15,6 +15,7 @@ app.use(express.urlencoded({ extended: true }));
 app.get('/', (_, res) => res.status(200).send('OK'));
 
 app.post('/', async (req, res) => {
+  console.log(JSON.stringify({ request: req.body }));
   try {
     if (req.body.action === 'bet_request') {
       const bet = await handleBetRequest(JSON.parse(req.body.game_state));
