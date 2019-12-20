@@ -1,21 +1,36 @@
-import { checkCombinations } from './combinations-helper';
-import { GameState } from './types';
+import { getCombinations } from './combinations-helper';
+import { GameState, Combination } from './types';
 import { isBadHand } from './hand-helper';
 
 type Action = 'fold' | 'check' | 'raise' | 'allIn';
 
+const combinationScores: Record<Combination, number> = {
+  [Combination.Pair]: 1,
+  [Combination.TwoPair]: 2,
+  [Combination.ThreeOfAKind]: 3,
+  [Combination.Straight]: 4,
+  [Combination.Flush]: 5,
+  [Combination.FullHouse]: 6,
+  [Combination.FourOfAKind]: 7,
+  [Combination.StraightFlush]: 8,
+  [Combination.RoyalFlush]: 9,
+};
+const getCombinationScore = (comb: Combination): number => combinationScores[comb];
+
 export const handleBetRequestFactory: () => (_: GameState) => number = () => gameState => {
   const ourPlayer = gameState.players[gameState.in_action];
 
-  const combinationScore = checkCombinations(ourPlayer.hole_cards as any, gameState.community_cards as any);
+  const combinations = getCombinations(ourPlayer.hole_cards!, gameState.community_cards);
 
-  const isBadCards = isBadHand(ourPlayer.hole_cards as any);
+  const combinationScore = Math.max(0, ...combinations.map(c => getCombinationScore(c)));
+
+  const isBadCards = isBadHand(ourPlayer.hole_cards!);
 
   const action: Action = isBadCards
     ? 'fold'
-    : combinationScore >= 2
+    : combinationScore >= 3
     ? 'allIn'
-    : combinationScore >= 1
+    : combinationScore >= 2
     ? 'raise'
     : 'check';
 

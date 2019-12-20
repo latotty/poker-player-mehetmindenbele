@@ -1,4 +1,4 @@
-import { Card } from './types';
+import { Card, Combination } from './types';
 
 type CardMatcher = (hand: Card[], comm: Card[]) => boolean;
 
@@ -74,17 +74,17 @@ const isRoyalFlush: CardMatcher = (hand, comm) =>
       royal.every(sRank => [...hand, ...comm].some(c => c.rank === sRank && c.suit === suite)),
   );
 
-const matchers: [number, CardMatcher][] = [
-  [1, isOnePair],
-  [2, isTwoPair],
-  [3, isThreeOfAKind],
-  [4, isStraight],
-  [5, isFlush],
-  [6, isFullHouse],
-  [7, isFourOfAKind],
-  [8, isStraightFlush],
-  [9, isRoyalFlush],
+const matchers: [Combination, CardMatcher][] = [
+  [Combination.Pair, isOnePair],
+  [Combination.TwoPair, isTwoPair],
+  [Combination.ThreeOfAKind, isThreeOfAKind],
+  [Combination.Straight, isStraight],
+  [Combination.Flush, isFlush],
+  [Combination.FullHouse, isFullHouse],
+  [Combination.FourOfAKind, isFourOfAKind],
+  [Combination.StraightFlush, isStraightFlush],
+  [Combination.RoyalFlush, isRoyalFlush],
 ];
 
-export const checkCombinations = (...opts: Parameters<CardMatcher>): number =>
-  Math.max(...matchers.map(([score, matcher]) => (matcher(...opts) ? score : 0)));
+export const getCombinations = (...opts: Parameters<CardMatcher>): Combination[] =>
+  matchers.filter(([_, matcher]) => matcher(...opts)).map(([comb]) => comb);

@@ -1,10 +1,11 @@
 import 'jest';
-import { checkCombinations } from './combinations-helper';
+import { getCombinations } from './combinations-helper';
+import { Combination } from './types';
 
 const cases: {
-  score: number;
-  hand: Parameters<typeof checkCombinations>[0];
-  comm: Parameters<typeof checkCombinations>[1];
+  combinations: Combination[];
+  hand: Parameters<typeof getCombinations>[0];
+  comm: Parameters<typeof getCombinations>[1];
 }[] = [
   {
     hand: [
@@ -12,7 +13,7 @@ const cases: {
       { rank: '5', suit: 'diamonds' },
     ],
     comm: [],
-    score: 1,
+    combinations: [Combination.Pair],
   },
   {
     hand: [
@@ -25,7 +26,7 @@ const cases: {
       { rank: '10', suit: 'spades' },
       { rank: '7', suit: 'clubs' },
     ],
-    score: 1,
+    combinations: [Combination.Pair],
   },
   {
     hand: [
@@ -38,7 +39,7 @@ const cases: {
       { rank: 'K', suit: 'spades' },
       { rank: '7', suit: 'clubs' },
     ],
-    score: 2,
+    combinations: [Combination.Pair, Combination.TwoPair],
   },
   {
     hand: [
@@ -51,7 +52,7 @@ const cases: {
       { rank: '10', suit: 'spades' },
       { rank: '5', suit: 'clubs' },
     ],
-    score: 3,
+    combinations: [Combination.Pair, Combination.TwoPair, Combination.ThreeOfAKind],
   },
   {
     hand: [
@@ -62,9 +63,9 @@ const cases: {
       { rank: '6', suit: 'hearts' },
       { rank: '7', suit: 'clubs' },
       { rank: '8', suit: 'spades' },
-      { rank: '5', suit: 'clubs' },
+      { rank: 'K', suit: 'clubs' },
     ],
-    score: 4,
+    combinations: [Combination.Straight],
   },
   {
     hand: [
@@ -75,9 +76,9 @@ const cases: {
       { rank: '6', suit: 'diamonds' },
       { rank: 'K', suit: 'diamonds' },
       { rank: '8', suit: 'diamonds' },
-      { rank: '5', suit: 'diamonds' },
+      { rank: 'J', suit: 'diamonds' },
     ],
-    score: 5,
+    combinations: [Combination.Flush],
   },
   {
     hand: [
@@ -90,7 +91,7 @@ const cases: {
       { rank: 'K', suit: 'spades' },
       { rank: '7', suit: 'clubs' },
     ],
-    score: 6,
+    combinations: [Combination.Pair, Combination.TwoPair, Combination.ThreeOfAKind, Combination.FullHouse],
   },
   // {
   //   hand: [
@@ -103,7 +104,7 @@ const cases: {
   //     { rank: '7', suit: 'spades' },
   //     { rank: '7', suit: 'clubs' },
   //   ],
-  //   score: 6,
+  //   combinations: [Combination.FullHouse],
   // },
   // {
   //   hand: [
@@ -116,7 +117,7 @@ const cases: {
   //     { rank: 'K', suit: 'spades' },
   //     { rank: '7', suit: 'clubs' },
   //   ],
-  //   score: 6,
+  //   combinations: [Combination.FullHouse],
   // },
   {
     hand: [
@@ -129,7 +130,13 @@ const cases: {
       { rank: '10', suit: 'spades' },
       { rank: '5', suit: 'clubs' },
     ],
-    score: 7,
+    combinations: [
+      Combination.Pair,
+      Combination.TwoPair,
+      Combination.ThreeOfAKind,
+      Combination.FullHouse,
+      Combination.FourOfAKind,
+    ],
   },
   {
     hand: [
@@ -140,9 +147,9 @@ const cases: {
       { rank: '6', suit: 'diamonds' },
       { rank: '7', suit: 'diamonds' },
       { rank: '8', suit: 'diamonds' },
-      { rank: '5', suit: 'clubs' },
+      { rank: 'K', suit: 'clubs' },
     ],
-    score: 8,
+    combinations: [Combination.Straight, Combination.Flush, Combination.StraightFlush],
   },
   {
     hand: [
@@ -155,10 +162,10 @@ const cases: {
       { rank: 'Q', suit: 'diamonds' },
       { rank: 'A', suit: 'diamonds' },
     ],
-    score: 9,
+    combinations: [Combination.Straight, Combination.Flush, Combination.StraightFlush, Combination.RoyalFlush],
   },
 ];
 
-cases.forEach(({ score, hand, comm }, i) =>
-  it(`test #${i}`, () => expect(checkCombinations(hand, comm)).toEqual(score)),
+cases.forEach(({ combinations, hand, comm }, i) =>
+  it(`test #${i}`, () => expect(getCombinations(hand, comm)).toEqual(combinations)),
 );

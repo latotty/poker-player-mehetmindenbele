@@ -79,3 +79,15 @@ export type Card = {
   /** Suit of the card. Possible values are: clubs,spades,hearts,diamonds */
   suit: 'clubs' | 'spades' | 'hearts' | 'diamonds';
 };
+
+export enum Combination {
+  Pair = 'Pair',
+  TwoPair = 'TwoPair',
+  ThreeOfAKind = 'ThreeOfAKind',
+  Straight = 'Straight',
+  Flush = 'Flush',
+  FullHouse = 'FullHouse',
+  FourOfAKind = 'FourOfAKind',
+  StraightFlush = 'StraightFlush',
+  RoyalFlush = 'RoyalFlush',
+}

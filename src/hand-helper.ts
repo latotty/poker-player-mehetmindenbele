@@ -2,7 +2,7 @@ import { Card } from './types';
 
 type Rank = Card['rank'];
 
-export const isBadHand = ([h1, h2]: [Card, Card]): boolean =>
+export const isBadHand = ([h1, h2]: Card[]): boolean =>
   unplayable.some(([c1, c2]) => (c1 === h1.rank && c2 === h2.rank) || (c1 === h2.rank && c2 === h1.rank));
 
 export const unplayable: Rank[][] = [
