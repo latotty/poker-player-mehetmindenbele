@@ -1,5 +1,8 @@
 {
     "extends": [
         "@codingsans/eslint-config/typescript-recommended"
-    ]
+    ],
+    "rules": {
+      "@typescript-eslint/camelcase": "off"
+    }
 }
