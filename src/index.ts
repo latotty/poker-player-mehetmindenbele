@@ -1,5 +1,4 @@
 import * as express from 'express';
-import * as bodyParser from 'body-parser';
 import { Player } from './Player';
 
 const VERSION = 'Default TypeScript folding player';
@@ -7,8 +6,8 @@ const VERSION = 'Default TypeScript folding player';
 const app = express();
 const player = new Player();
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.get('/', (_, res) => res.send(200, 'OK'));
 
