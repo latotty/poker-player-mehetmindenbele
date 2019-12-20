@@ -2,17 +2,13 @@ import { Card, Combination } from './types';
 
 type CardMatcher = (hand: Card[], comm: Card[]) => boolean;
 
-const isOnePair: CardMatcher = (hand, comm) =>
-  hand.filter((c, i) => [...hand.slice(i + 1), ...comm].filter(c2 => c.rank === c2.rank).length >= 1).length >= 1;
+const containsCard = (card: Card, cards: Card[]): boolean =>
+  cards.some(c => c.rank === card.rank && c.suit === card.suit);
+const deckIntercept = (cards1: Card[], cards2: Card[]): boolean => cards1.some(c => containsCard(c, cards2));
 
-const isTwoPair: CardMatcher = (hand, comm) =>
-  hand.filter((c, i) => [...hand.slice(i + 1), ...comm].filter(c2 => c.rank === c2.rank).length >= 1).length >= 2;
-
-const isThreeOfAKind: CardMatcher = (hand, comm) =>
-  hand.filter((c, i) => [...hand.slice(i + 1), ...comm].filter(c2 => c.rank === c2.rank).length >= 2).length >= 1;
-
+const suites = ['clubs', 'spades', 'hearts', 'diamonds'];
+const ranks = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
 const royal: Card['rank'][] = ['10', 'J', 'Q', 'K', 'A'];
-
 const straights: Card['rank'][][] = [
   ['A', '2', '3', '4', '5'],
   ['2', '3', '4', '5', '6'],
@@ -26,16 +22,58 @@ const straights: Card['rank'][][] = [
   royal,
 ];
 
-const suites = ['clubs', 'spades', 'hearts', 'diamonds'];
+const isOnePair: CardMatcher = (hand, comm) =>
+  ranks
+    // collect cards for each rank
+    .map(rank => [...hand, ...comm].filter(c => c.rank === rank))
+    .filter(
+      rankDeck =>
+        // should be at least 2
+        rankDeck.length >= 2 &&
+        // should have at least one card in our hand
+        deckIntercept(rankDeck, hand),
+      // should be at least 1 set
+    ).length >= 1;
+
+const isTwoPair: CardMatcher = (hand, comm) =>
+  ranks
+    .map(rank => [...hand, ...comm].filter(c => c.rank === rank))
+    .filter(
+      rankDeck =>
+        // should be at least 2
+        rankDeck.length >= 2 &&
+        // should have at least one card in our hand
+        deckIntercept(rankDeck, hand),
+      // should be at least 2 sets
+    ).length >= 2;
+
+const isThreeOfAKind: CardMatcher = (hand, comm) =>
+  ranks
+    .map(rank => [...hand, ...comm].filter(c => c.rank === rank))
+    .filter(
+      rankDeck =>
+        // should be at least 3
+        rankDeck.length >= 3 &&
+        // should have at least one card in our hand
+        deckIntercept(rankDeck, hand),
+      // should be at least 1 set
+    ).length >= 1;
 
 const isStraight: CardMatcher = (hand, comm) =>
-  straights.some(
-    sRanks =>
-      // MUST be at least one card in hand
-      sRanks.some(sRank => hand.some(c => c.rank === sRank)) &&
-      // MUST be every card in hand + comm
-      sRanks.every(sRank => [...hand, ...comm].some(c => c.rank === sRank)),
-  );
+  straights
+    .map(sRanks => ({
+      sRanks,
+      // collect cards for each rank in straight
+      deck: [...hand, ...comm].filter(c => sRanks.some(rank => c.rank === rank)),
+    }))
+    .filter(
+      ({ sRanks, deck }) =>
+        // should be a full straight
+        sRanks.every(rank => deck.some(dc => dc.rank === rank)) &&
+        // should have at least one card in our hand
+        deckIntercept(deck, hand),
+      // should be at least 1 set
+    ).length >= 1;
 
 const isFlush: CardMatcher = (hand, comm) =>
   suites.some(

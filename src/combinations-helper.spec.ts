@@ -52,7 +52,7 @@ const cases: {
       { rank: '10', suit: 'spades' },
       { rank: '5', suit: 'clubs' },
     ],
-    combinations: [Combination.Pair, Combination.TwoPair, Combination.ThreeOfAKind],
+    combinations: [Combination.Pair, Combination.ThreeOfAKind],
   },
   {
     hand: [
@@ -130,13 +130,7 @@ const cases: {
       { rank: '10', suit: 'spades' },
       { rank: '5', suit: 'clubs' },
     ],
-    combinations: [
-      Combination.Pair,
-      Combination.TwoPair,
-      Combination.ThreeOfAKind,
-      Combination.FullHouse,
-      Combination.FourOfAKind,
-    ],
+    combinations: [Combination.Pair, Combination.ThreeOfAKind, Combination.FullHouse, Combination.FourOfAKind],
   },
   {
     hand: [
