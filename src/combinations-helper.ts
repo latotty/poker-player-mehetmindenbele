@@ -1,9 +1,6 @@
 import { Card } from './types';
 
-type CardMatcher = (
-  hand: [Card, Card],
-  comm: [] | [Card, Card, Card] | [Card, Card, Card, Card] | [Card, Card, Card, Card, Card],
-) => boolean;
+type CardMatcher = (hand: Card[], comm: Card[]) => boolean;
 
 const isOnePair: CardMatcher = (hand, comm) =>
   hand.filter((c, i) => [...hand.slice(i + 1), ...comm].filter(c2 => c.rank === c2.rank).length >= 1).length >= 1;
@@ -49,6 +46,11 @@ const isFlush: CardMatcher = (hand, comm) =>
       [...hand, ...comm].filter(c => c.suit === suite).length >= 5,
   );
 
+const isFullHouse: CardMatcher = (hand, comm) =>
+  isOnePair([hand[0]], comm) &&
+  isOnePair([hand[1]], comm) &&
+  (isThreeOfAKind([hand[0]], comm) || isThreeOfAKind([hand[1]], comm));
+
 const isFourOfAKind: CardMatcher = (hand, comm) =>
   hand.filter((c, i) => [...hand.slice(i + 1), ...comm].filter(c2 => c.rank === c2.rank).length >= 3).length >= 1;
 
@@ -78,6 +80,7 @@ const matchers: [number, CardMatcher][] = [
   [3, isThreeOfAKind],
   [4, isStraight],
   [5, isFlush],
+  [6, isFullHouse],
   [7, isFourOfAKind],
   [8, isStraightFlush],
   [9, isRoyalFlush],
