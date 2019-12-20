@@ -1,4 +1,4 @@
-import * as express from 'express';
+import express from 'express';
 import { handleBetRequestFactory } from './bet-request-handler';
 import { handleShowdownFactory } from './showdown-handler';
 
@@ -39,7 +39,7 @@ app.post('/', (req, res) => {
   }
 });
 
-const port = parseInt(process.env['PORT']) || 3000;
+const port = parseInt(process.env['PORT'] || '3000') || 3000;
 const host = '0.0.0.0';
 app.listen(port, host);
 console.log(`Listening at http://${host}:${port}`);
