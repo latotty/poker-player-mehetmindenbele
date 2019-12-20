@@ -2,7 +2,7 @@ import * as express from 'express';
 import { handleBetRequestFactory } from './bet-request-handler';
 import { handleShowdownFactory } from './showdown-handler';
 
-const VERSION = 'Default TypeScript folding player';
+const VERSION = 'MehetBeleMinden MK1';
 
 const handleBetRequest = handleBetRequestFactory();
 const handleShowdown = handleShowdownFactory();
@@ -15,15 +15,16 @@ app.use(express.urlencoded({ extended: true }));
 app.get('/', (_, res) => res.status(200).send('OK'));
 
 app.post('/', async (req, res) => {
-  console.log(JSON.stringify({ request: req.body }));
   try {
     if (req.body.action === 'bet_request') {
       const bet = await handleBetRequest(JSON.parse(req.body.game_state));
+      console.log(JSON.stringify({ bet_request: req.body, bet }));
       res.status(200).send(bet.toString());
       return;
     }
     if (req.body.action === 'showdown') {
       await handleShowdown(JSON.parse(req.body.game_state));
+      console.log(JSON.stringify({ showdown: req.body }));
       res.status(200).send('OK');
       return;
     }
