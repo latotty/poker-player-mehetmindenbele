@@ -94,7 +94,16 @@ const isFullHouse: CardMatcher = (hand, comm) =>
   (isThreeOfAKind([hand[0]], comm) || isThreeOfAKind([hand[1]], comm));
 
 const isFourOfAKind: CardMatcher = (hand, comm) =>
-  hand.filter((c, i) => [...hand.slice(i + 1), ...comm].filter(c2 => c.rank === c2.rank).length >= 3).length >= 1;
+  ranks
+    .map(rank => [...hand, ...comm].filter(c => c.rank === rank))
+    .filter(
+      rankDeck =>
+        // should be at least 4
+        rankDeck.length >= 4 &&
+        // should have at least one card in our hand
+        deckIntercept(rankDeck, hand),
+      // should be at least 1 set
+    ).length >= 1;
 
 const isStraightFlush: CardMatcher = (hand, comm) =>
   suites.some(suite =>
