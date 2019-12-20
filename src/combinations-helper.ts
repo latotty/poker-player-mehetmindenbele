@@ -14,10 +14,14 @@ const isTwoPair: CardMatcher = (hand, comm) =>
 const isThreeOfAKind: CardMatcher = (hand, comm) =>
   hand.filter(c => [...hand, ...comm].filter(c2 => c.rank === c2.rank).length >= 3).length >= 1;
 
+const isFourOfAKind: CardMatcher = (hand, comm) =>
+  hand.filter(c => [...hand, ...comm].filter(c2 => c.rank === c2.rank).length >= 4).length >= 1;
+
 const matchers: [number, CardMatcher][] = [
   [1, isOnePair],
   [2, isTwoPair],
   [3, isThreeOfAKind],
+  [4, isFourOfAKind],
 ];
 
 export const checkCombinations = (...opts: Parameters<CardMatcher>): number =>

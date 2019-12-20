@@ -1,4 +1,4 @@
-import { checkCombinations } from './card-helpers';
+import { checkCombinations } from './combinations-helper';
 import { GameState } from './types';
 
 type Action = 'fold' | 'check' | 'raise' | 'allIn';
@@ -12,10 +12,10 @@ export const handleBetRequestFactory: () => (_: GameState) => number = () => gam
 
   switch (action) {
     case 'raise': {
-      return Math.max(0, gameState.current_buy_in - ourPlayer.bet + gameState.minimum_raise + 1) || 0;
+      return Math.max(0, gameState.current_buy_in - ourPlayer.bet + gameState.minimum_raise * combinationScore) || 0;
     }
     case 'check': {
-      return Math.max(0, gameState.current_buy_in - ourPlayer.bet + gameState.minimum_raise) || 0;
+      return Math.max(0, gameState.current_buy_in - ourPlayer.bet) || 0;
     }
     case 'allIn': {
       return ourPlayer.stack;
