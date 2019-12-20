@@ -1,4 +1,4 @@
-export interface GameState {
+export type GameState = {
   /** ID of the current tournament */
   tournament_id: string;
   /**
@@ -42,9 +42,9 @@ export interface GameState {
   players: Player[];
   /** Finally the array of community cards. */
   community_cards: Card[];
-}
+};
 
-export interface Player {
+export type Player = {
   /** Id of the player (same as the index) */
   id: number;
   /** Name specified in the tournament config */
@@ -71,11 +71,11 @@ export interface Player {
    * This is only visible for your own player except after showdown, when cards revealed are also included.
    */
   hole_cards?: Card[];
-}
+};
 
-export interface Card {
+export type Card = {
   /** Rank of the card. Possible values are numbers 2-10 and J,Q,K,A */
   rank: '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '10' | 'J' | 'Q' | 'K' | 'A';
   /** Suit of the card. Possible values are: clubs,spades,hearts,diamonds */
   suit: 'clubs' | 'spades' | 'hearts' | 'diamonds';
-}
+};
