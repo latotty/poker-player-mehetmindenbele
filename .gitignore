@@ -5,6 +5,6 @@ bower_components/
 *.log*
 tmp/
 typings/
-out/
+dist/
 web
 .sw[a-z]

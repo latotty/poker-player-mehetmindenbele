@@ -1,0 +1,5 @@
+{
+    "extends": [
+        "@codingsans/eslint-config/typescript-recommended"
+    ]
+}

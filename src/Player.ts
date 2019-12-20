@@ -4,8 +4,8 @@ export class Player {
   }
 
   public showdown(gameState: any): void {
-
+    console.log('showdown');
   }
-};
+}
 
 export default Player;
