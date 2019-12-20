@@ -28,8 +28,15 @@ export const handleBetRequestFactory: () => (_: GameState) => number = () => gam
 
   const isBetTooHigh = gameState.current_buy_in >= 500;
 
-  const action: Action =
-    isBadCards || isBetTooHigh ? 'fold' : combinationScore >= 5 ? 'allIn' : combinationScore >= 2 ? 'raise' : 'check';
+  const action: Action = isBadCards
+    ? 'fold'
+    : combinationScore >= 5
+    ? 'allIn'
+    : combinationScore >= 2
+    ? 'raise'
+    : isBetTooHigh
+    ? 'fold'
+    : 'check';
 
   const bet = getBet(gameState, action, combinationScore);
 
