@@ -1,6 +1,6 @@
 import { getCombinations } from './combinations-helper';
 import { GameState, Combination } from './types';
-import { isBadHand } from './hand-helper';
+import { isBadHand, isGoodHand } from './hand-helper';
 
 type Action = 'fold' | 'check' | 'raise' | 'allIn';
 
@@ -26,7 +26,9 @@ export const handleBetRequestFactory: () => (_: GameState) => number = () => gam
 
   const isBadCards = isBadHand(ourPlayer.hole_cards!);
 
-  const isBetTooHigh = gameState.current_buy_in >= 500;
+  const isGoodCards = isGoodHand(ourPlayer.hole_cards!);
+
+  const isBetTooHigh = gameState.current_buy_in >= 500 && !isGoodCards;
 
   const action: Action = isBadCards
     ? 'fold'

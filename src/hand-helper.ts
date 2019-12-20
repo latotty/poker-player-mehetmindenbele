@@ -5,6 +5,9 @@ type Rank = Card['rank'];
 export const isBadHand = ([h1, h2]: Card[]): boolean =>
   unplayable.some(([c1, c2]) => (c1 === h1.rank && c2 === h2.rank) || (c1 === h2.rank && c2 === h1.rank));
 
+export const isGoodHand = ([h1, h2]: Card[]): boolean =>
+  goodHand.some(([c1, c2]) => (c1 === h1.rank && c2 === h2.rank) || (c1 === h2.rank && c2 === h1.rank));
+
 export const unplayable: Rank[][] = [
   ['4', '3'],
   ['3', '2'],
@@ -41,4 +44,19 @@ export const unplayable: Rank[][] = [
   ['Q', '3'],
   ['J', '2'],
   ['Q', '2'],
+];
+
+export const goodHand: Rank[][] = [
+  ['A', 'K'],
+  ['A', 'Q'],
+  ['A', 'J'],
+  ['A', '10'],
+  ['K', 'Q'],
+  ['K', 'J'],
+  ['K', '10'],
+  ['Q', 'J'],
+  ['Q', '10'],
+  ['J', '10'],
+  ['J', '9'],
+  ['10', '9'],
 ];
