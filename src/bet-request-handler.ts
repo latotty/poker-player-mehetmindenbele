@@ -7,5 +7,5 @@ export const handleBetRequestFactory: () => (_: GameState) => Promise<number> = 
   bet_index,
   minimum_raise,
 }) => {
-  return Math.max(0, current_buy_in - players[in_action][bet_index] + minimum_raise + 1) || 0;
+  return Math.max(0, current_buy_in - players[in_action].bet + minimum_raise + 1) || 0;
 };
