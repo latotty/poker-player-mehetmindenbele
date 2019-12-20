@@ -1,7 +1,26 @@
+import { checkCombinations } from './card-helpers';
 import { GameState } from './types';
 
-export const handleBetRequestFactory: () => (_: GameState) => Promise<number> = () => async gameState => {
+type Action = 'fold' | 'check' | 'raise' | 'allIn';
+
+export const handleBetRequestFactory: () => (_: GameState) => number = () => gameState => {
   const ourPlayer = gameState.players[gameState.in_action];
 
-  return Math.max(0, gameState.current_buy_in - ourPlayer.bet + gameState.minimum_raise + 1) || 0;
+  const combinationScore = checkCombinations(ourPlayer.hole_cards as any, gameState.community_cards as any);
+
+  const action: Action = combinationScore > 2 ? 'allIn' : combinationScore > 1 ? 'raise' : 'check';
+
+  switch (action) {
+    case 'raise': {
+      return Math.max(0, gameState.current_buy_in - ourPlayer.bet + gameState.minimum_raise + 1) || 0;
+    }
+    case 'check': {
+      return Math.max(0, gameState.current_buy_in - ourPlayer.bet + gameState.minimum_raise) || 0;
+    }
+    case 'allIn': {
+      return ourPlayer.stack;
+    }
+    default:
+      return 0;
+  }
 };

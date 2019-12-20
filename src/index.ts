@@ -14,16 +14,16 @@ app.use(express.urlencoded({ extended: true }));
 
 app.get('/', (_, res) => res.status(200).send('OK'));
 
-app.post('/', async (req, res) => {
+app.post('/', (req, res) => {
   try {
     if (req.body.action === 'bet_request') {
-      const bet = await handleBetRequest(JSON.parse(req.body.game_state));
+      const bet = handleBetRequest(JSON.parse(req.body.game_state));
       console.log(JSON.stringify({ bet_request: req.body, bet }));
       res.status(200).send(bet.toString());
       return;
     }
     if (req.body.action === 'showdown') {
-      await handleShowdown(JSON.parse(req.body.game_state));
+      handleShowdown(JSON.parse(req.body.game_state));
       console.log(JSON.stringify({ showdown: req.body }));
       res.status(200).send('OK');
       return;
