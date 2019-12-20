@@ -76,13 +76,17 @@ const isStraight: CardMatcher = (hand, comm) =>
     ).length >= 1;
 
 const isFlush: CardMatcher = (hand, comm) =>
-  suites.some(
-    suite =>
-      // MUST be at least one card in hand
-      hand.some(c => c.suit === suite) &&
-      // MUST be every card in hand + comm
-      [...hand, ...comm].filter(c => c.suit === suite).length >= 5,
-  );
+  suites
+    // collect cards for each suite
+    .map(suite => [...hand, ...comm].filter(c => c.suit === suite))
+    .filter(
+      suiteDeck =>
+        // at least 5 cards
+        suiteDeck.length >= 5 &&
+        // should have at least one card in our hand
+        deckIntercept(suiteDeck, hand),
+      // should be at least 1 set
+    ).length >= 1;
 
 const isFullHouse: CardMatcher = (hand, comm) =>
   isOnePair([hand[0]], comm) &&
@@ -90,7 +94,16 @@ const isFullHouse: CardMatcher = (hand, comm) =>
   (isThreeOfAKind([hand[0]], comm) || isThreeOfAKind([hand[1]], comm));
 
 const isFourOfAKind: CardMatcher = (hand, comm) =>
-  hand.filter((c, i) => [...hand.slice(i + 1), ...comm].filter(c2 => c.rank === c2.rank).length >= 3).length >= 1;
+  ranks
+    .map(rank => [...hand, ...comm].filter(c => c.rank === rank))
+    .filter(
+      rankDeck =>
+        // should be at least 4
+        rankDeck.length >= 4 &&
+        // should have at least one card in our hand
+        deckIntercept(rankDeck, hand),
+      // should be at least 1 set
+    ).length >= 1;
 
 const isStraightFlush: CardMatcher = (hand, comm) =>
   suites.some(suite =>
