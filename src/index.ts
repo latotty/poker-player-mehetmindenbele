@@ -12,7 +12,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.get('/', (_, res) => res.send(200, 'OK'));
+app.get('/', (_, res) => res.status(200).send('OK'));
 
 app.post('/', async (req, res) => {
   try {
