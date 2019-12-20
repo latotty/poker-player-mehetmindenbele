@@ -1,11 +1,8 @@
 import { GameState } from './types';
 
-export const handleBetRequestFactory: () => (_: GameState) => Promise<number> = () => async ({
-  current_buy_in,
-  players,
-  in_action,
-  bet_index,
-  minimum_raise,
-}) => {
-  return Math.max(0, current_buy_in - players[in_action].bet + minimum_raise + 1) || 0;
+export const handleBetRequestFactory: () => (_: GameState) => Promise<number> = () => async gameState => {
+  return (
+    Math.max(0, gameState.current_buy_in - gameState.players[gameState.in_action].bet + gameState.minimum_raise + 1) ||
+    0
+  );
 };
