@@ -2,11 +2,21 @@ import { Card, Combination } from './types';
 
 type CardMatcher = (hand: Card[], comm: Card[]) => boolean;
 
+const containsCard = (card: Card, cards: Card[]): boolean =>
+  cards.some(c => c.rank === card.rank && c.suit === card.suit);
+const deckIntercept = (cards1: Card[], cards2: Card[]): boolean => cards1.some(c => containsCard(c, cards2));
+
+const ranks = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
+
 const isOnePair: CardMatcher = (hand, comm) =>
-  hand.filter((c, i) => [...hand.slice(i + 1), ...comm].filter(c2 => c.rank === c2.rank).length >= 1).length >= 1;
+  ranks
+    .map(rank => [...hand, ...comm].filter(c => c.rank === rank))
+    .filter(rankDeck => rankDeck.length >= 2 && deckIntercept(rankDeck, hand)).length >= 1;
 
 const isTwoPair: CardMatcher = (hand, comm) =>
-  hand.filter((c, i) => [...hand.slice(i + 1), ...comm].filter(c2 => c.rank === c2.rank).length >= 1).length >= 2;
+  ranks
+    .map(rank => [...hand, ...comm].filter(c => c.rank === rank))
+    .filter(rankDeck => rankDeck.length >= 2 && deckIntercept(rankDeck, hand)).length >= 2;
 
 const isThreeOfAKind: CardMatcher = (hand, comm) =>
   hand.filter((c, i) => [...hand.slice(i + 1), ...comm].filter(c2 => c.rank === c2.rank).length >= 2).length >= 1;
