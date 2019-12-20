@@ -2,20 +2,20 @@ import { Card } from './types';
 
 type CardMatcher = (
   hand: [Card, Card],
-  comm: [Card, Card, Card] | [Card, Card, Card, Card] | [Card, Card, Card, Card, Card],
+  comm: [] | [Card, Card, Card] | [Card, Card, Card, Card] | [Card, Card, Card, Card, Card],
 ) => boolean;
 
 const isOnePair: CardMatcher = (hand, comm) =>
-  hand.filter(c => [...hand, ...comm].filter(c2 => c.rank === c2.rank).length >= 2).length >= 1;
+  hand.filter((c, i) => [...hand.slice(i + 1), ...comm].filter(c2 => c.rank === c2.rank).length >= 1).length >= 1;
 
 const isTwoPair: CardMatcher = (hand, comm) =>
-  hand.filter(c => [...hand, ...comm].filter(c2 => c.rank === c2.rank).length >= 2).length >= 2;
+  hand.filter((c, i) => [...hand.slice(i + 1), ...comm].filter(c2 => c.rank === c2.rank).length >= 1).length >= 2;
 
 const isThreeOfAKind: CardMatcher = (hand, comm) =>
-  hand.filter(c => [...hand, ...comm].filter(c2 => c.rank === c2.rank).length >= 3).length >= 1;
+  hand.filter((c, i) => [...hand.slice(i + 1), ...comm].filter(c2 => c.rank === c2.rank).length >= 2).length >= 1;
 
 const isFourOfAKind: CardMatcher = (hand, comm) =>
-  hand.filter(c => [...hand, ...comm].filter(c2 => c.rank === c2.rank).length >= 4).length >= 1;
+  hand.filter((c, i) => [...hand.slice(i + 1), ...comm].filter(c2 => c.rank === c2.rank).length >= 3).length >= 1;
 
 const matchers: [number, CardMatcher][] = [
   [1, isOnePair],
