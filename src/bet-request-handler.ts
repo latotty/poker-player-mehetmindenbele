@@ -10,6 +10,15 @@ export const handleBetRequestFactory: () => (_: GameState) => number = () => gam
 
   const action: Action = combinationScore > 2 ? 'allIn' : combinationScore > 1 ? 'raise' : 'check';
 
+  const bet = getBet(gameState, action, combinationScore);
+
+  console.log({ hand: ourPlayer.hole_cards, comm: gameState.community_cards, combinationScore, action, bet });
+
+  return bet;
+};
+
+const getBet = (gameState: GameState, action: Action, combinationScore: number): number => {
+  const ourPlayer = gameState.players[gameState.in_action];
   switch (action) {
     case 'raise': {
       return Math.max(0, gameState.current_buy_in - ourPlayer.bet + gameState.minimum_raise * combinationScore) || 0;
