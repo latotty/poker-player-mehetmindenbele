@@ -38,6 +38,15 @@ const isStraight: CardMatcher = (hand, comm) =>
       sRanks.every(sRank => [...hand, ...comm].some(c => c.rank === sRank)),
   );
 
+const isFlush: CardMatcher = (hand, comm) =>
+  suites.some(
+    suite =>
+      // MUST be at least one card in hand
+      hand.some(c => c.suit === suite) &&
+      // MUST be every card in hand + comm
+      [...hand, ...comm].filter(c => c.suit === suite).length >= 5,
+  );
+
 const isFourOfAKind: CardMatcher = (hand, comm) =>
   hand.filter((c, i) => [...hand.slice(i + 1), ...comm].filter(c2 => c.rank === c2.rank).length >= 3).length >= 1;
 
@@ -57,6 +66,7 @@ const matchers: [number, CardMatcher][] = [
   [2, isTwoPair],
   [3, isThreeOfAKind],
   [4, isStraight],
+  [5, isFlush],
   [7, isFourOfAKind],
   [8, isStraightFlush],
 ];

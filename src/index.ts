@@ -2,7 +2,7 @@ import express from 'express';
 import { handleBetRequestFactory } from './bet-request-handler';
 import { handleShowdownFactory } from './showdown-handler';
 
-const VERSION = 'MehetBeleMinden MK2';
+const VERSION = 'MehetBeleMinden MK3';
 
 const handleBetRequest = handleBetRequestFactory();
 const handleShowdown = handleShowdownFactory();

@@ -68,6 +68,19 @@ const cases: {
   },
   {
     hand: [
+      { rank: '2', suit: 'spades' },
+      { rank: '5', suit: 'diamonds' },
+    ],
+    comm: [
+      { rank: '6', suit: 'diamonds' },
+      { rank: 'K', suit: 'diamonds' },
+      { rank: '8', suit: 'diamonds' },
+      { rank: '5', suit: 'diamonds' },
+    ],
+    score: 5,
+  },
+  {
+    hand: [
       { rank: '5', suit: 'spades' },
       { rank: '5', suit: 'diamonds' },
     ],
